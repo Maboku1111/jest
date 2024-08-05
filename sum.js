@@ -1,22 +1,61 @@
-// Create a function to add two numbers
-function sum(a, b) {
-    return a + b;
+const readline = require("readline-sync");
+
+function getNumberInput(prompt) {
+  let input = readline.question(prompt);
+  while (isNaN(input)) {
+    console.log("Invalid input. Please enter a number.");
+    input = readline.question(prompt);
+  }
+  return Number(input);
 }
 
-// Create a function to subtract two numbers
-function subtract(a, b) {
-    return a - b;
+function getOperatorInput() {
+  const operators = ["+", "-", "*", "/"];
+  let input = readline.question("Enter the operator (+, -, *, /): ");
+  while (!operators.includes(input)) {
+    console.log("Invalid input. Please enter a valid operator.");
+    input = readline.question("Enter the operator (+, -, *, /): ");
+  }
+  return input;
 }
 
-// Create a function to multiply two numbers
-function multiply(a, b) {
-    return a * b;
+function calculate(num1, num2, operator) {
+  switch (operator) {
+    case "+":
+      return num1 + num2;
+    case "-":
+      return num1 - num2;
+    case "*":
+      return num1 * num2;
+    case "/":
+      if (num2 === 0) {
+        throw new Error("Division by zero is not allowed.");
+      }
+      return num1 / num2;
+    default:
+      throw new Error("Invalid operator.");
+  }
 }
 
-// Create a function to divide two numbers
-function divide(a, b) {
-    return a / b;
+function main() {
+  const num1 = getNumberInput("Enter the first number: ");
+  const num2 = getNumberInput("Enter the second number: ");
+  const operator = getOperatorInput();
+
+  try {
+    const result = calculate(num1, num2, operator);
+    console.log(`The result of ${num1} ${operator} ${num2} is ${result}`);
+  } catch (error) {
+    console.error(error.message);
+  }
 }
 
-// Be able to export this function into another file
-module.exports = { sum, subtract, multiply, divide };
+
+module.exports = {
+  getNumberInput,
+  getOperatorInput,
+  calculate,
+  main
+};
+
+main();
